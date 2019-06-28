@@ -12,14 +12,16 @@ def swapChoice(closed, current):
         if GPIO.input():
             index = (index+1)%len(closed)
             #call update lights here
+    #Could potentially run into an issue if the button is held too long
     return closed[index]
 
 def smartRemove(doors, value):
     if value in doors:
-        return doors.remove(value)
+        doors.remove(value)
     
 #Update lights function
-updateLights(openDoors, current):
+def updateLights(openDoors, current):
+    pass
     
 
 while True:
@@ -28,15 +30,24 @@ while True:
     winDoor = random.choice()
     doors = []
     #Let user pick
-    current = swapChoice(doors, 0) #Call lights by their pin number
+    current = swapChoice(doors, ) #Call lights by their pin number
     #Random open
-    options=doors
-    options = smartRemove(options, winDoor)
-    options = smartRemove(options, current)
-    firstClose = random.choice(options)
+    options = doors
+    smartRemove(options, winDoor)
+    smartRemove(options, current)
+    firstOpen = random.choice(options)
+    smartRemove(doors, firstOpen)
 
     #Allow user to swap
+    current = swapChoice(doors, )
+    doors = [winDoor]
 
     #Display winner
+    if winDoor == current:
+        pass
+        #Do something, like flashing all the lights
+    
+    
+    
 
 
