@@ -23,6 +23,8 @@ def smartRemove(doors, value):
 def updateLights(openDoors, current):
     pass
     
+#DEfault pins, red: 29, blue: 33
+#RGB pins: red:11, green:13, blue15
 
 while True:
     break
