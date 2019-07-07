@@ -1,4 +1,4 @@
-import random as rand
+import random
 import RPi.GPIO as GPIO
 
 GPIO.setwarnings(False)
@@ -9,14 +9,21 @@ GPIO.setup(33, GPIO.OUT)
 GPIO.setup(11, GPIO.OUT)
 GPIO.setup(13, GPIO.OUT)
 GPIO.setup(15, GPIO.OUT)
+GPIO.setup(18, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(16, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 #Function for swapping
 def swapChoice(closed, current):
     index=closed.index(current)
-    while not GPIO.input():
-        if GPIO.input():
+    while not GPIO.input(16):
+        if GPIO.input(18):
             index = (index+1)%len(closed)
-            updateChosed(closed[index])
+            updateChosen(closed[index])
+            while GPIO.input(18):
+                pass
+    while GPIO.input(18):
+        pass
+                
     #Could potentially run into an issue if the button is held too long
     return closed[index]
 
@@ -29,13 +36,18 @@ def closeDoor(closed):
     GPIO.output(closed, False)
     
 def updateChosen(current):
-    toggleDoors(False)
+    GPIO.output(11, False)
+    GPIO.output(13, False)
+    GPIO.output(15, False)
     if current == 29:
-        GPIO.output(11, val)
+        print('red')
+        GPIO.output(11, True)
     elif current == 31:
-        GPIO.output(13, val)
+        print('green')
+        GPIO.output(13, True)
     else:
-        GPIO.output(15, val)
+        print('blue')
+        GPIO.output(15, True)
     
     
     
@@ -50,20 +62,21 @@ def toggleDoors(val):
 
 
 while True:
-    toggleDorrs(True)
+    toggleDoors(True)
     #Random pick
-    winDoor = random.choice()
     doors = [29,31,33]
+    winDoor = random.choice(doors)
     #Let user pick
     current = swapChoice(doors, 29) #Call lights by their pin number
     #Random open
-    options = doors
+    options = [29, 31, 33]
     smartRemove(options, winDoor)
     smartRemove(options, current)
     firstOpen = random.choice(options)
     closeDoor(firstOpen)
+    print(doors)
     smartRemove(doors, firstOpen)
-
+    print(doors)
     #Allow user to swap
     current = swapChoice(doors, current)
     toggleDoors(False)
