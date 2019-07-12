@@ -21,7 +21,7 @@ def swapChoice(closed, current):
             updateChosen(closed[index])
             while GPIO.input(18):
                 pass
-    while GPIO.input(18):
+    while GPIO.input(16):
         pass
                 
     #Could potentially run into an issue if the button is held too long
