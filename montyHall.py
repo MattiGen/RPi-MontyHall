@@ -40,13 +40,13 @@ def updateChosen(current):
     GPIO.output(13, False)
     GPIO.output(15, False)
     if current == 29:
-        print('red')
+        #print('red')
         GPIO.output(11, True)
     elif current == 31:
-        print('green')
+        #print('green')
         GPIO.output(13, True)
     else:
-        print('blue')
+        #print('blue')
         GPIO.output(15, True)
     
     
@@ -62,6 +62,9 @@ def toggleDoors(val):
 
 
 while True:
+    GPIO.output(11, False)
+    GPIO.output(13, False)
+    GPIO.output(15, False)
     toggleDoors(True)
     #Random pick
     doors = [29,31,33]
@@ -74,9 +77,7 @@ while True:
     smartRemove(options, current)
     firstOpen = random.choice(options)
     closeDoor(firstOpen)
-    print(doors)
     smartRemove(doors, firstOpen)
-    print(doors)
     #Allow user to swap
     current = swapChoice(doors, current)
     toggleDoors(False)
